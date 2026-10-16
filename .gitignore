@@ -5,16 +5,14 @@ generator_tools/
 HOTEL_SYSTEM_SPECIFICATIONS.zip
 Hotel_Booking_Master_Prompts_Pack.zip
 hotel_booking_prompts_package/
+HOTEL_SYSTEM_SPECIFICATIONS/
 *.docx
 *.zip
 
-# Các file tài liệu theo dõi tiến độ & báo cáo QA chỉ dùng nội bộ với AI
-hotel-booking-master-plan*.md
-SESSION_PROGRESS.md
-FINAL_SYSTEM_AUDIT_REPORT.md
-QA_REPORT.md
+# Bỏ toàn bộ các file .md, chỉ giữ lại duy nhất README.md ở thư mục gốc
+*.md
+!/README.md
 
-# (Tùy chọn) Bỏ chú thích nếu bạn muốn giữ BaseRule và Antigravity trên máy nhưng không đẩy lên Git:
 Antigravity.md
 BaseRule.md
 
