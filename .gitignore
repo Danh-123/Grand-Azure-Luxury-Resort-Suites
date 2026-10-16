@@ -1,0 +1,107 @@
+# =======================================================
+# 1. Các file tài liệu prompt & generator cá nhân
+# =======================================================
+generator_tools/
+HOTEL_SYSTEM_SPECIFICATIONS.zip
+Hotel_Booking_Master_Prompts_Pack.zip
+hotel_booking_prompts_package/
+*.docx
+*.zip
+
+# Các file tài liệu theo dõi tiến độ & báo cáo QA chỉ dùng nội bộ với AI
+hotel-booking-master-plan*.md
+SESSION_PROGRESS.md
+FINAL_SYSTEM_AUDIT_REPORT.md
+QA_REPORT.md
+
+# (Tùy chọn) Bỏ chú thích nếu bạn muốn giữ BaseRule và Antigravity trên máy nhưng không đẩy lên Git:
+Antigravity.md
+BaseRule.md
+
+# =======================================================
+# 2. Môi trường & Dependencies chuẩn Next.js / Node
+# =======================================================
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# TypeScript & Cache biên dịch
+*.tsbuildinfo
+next-env.d.ts
+.eslintcache
+
+# Logs runtime & package manager
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Biến môi trường & Khóa bảo mật bí mật (KHÔNG ĐẨY LÊN REPO)
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+
+# =======================================================
+# 3. Deployment & Cloud Hosting (Vercel, Netlify)
+# =======================================================
+.vercel
+.netlify
+
+# =======================================================
+# 4. Testing & Báo cáo kiểm thử tự động
+# =======================================================
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# =======================================================
+# 5. Hệ điều hành & IDE / Code Editors
+# =======================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Editor config files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# =======================================================
+# 6. Thư mục Scratch & AI Assistant Artifacts
+# =======================================================
+.gemini/
+.antigravity/
+.cursor/
+.windsurf/
+scratch/
+
