@@ -3,6 +3,8 @@ import { mockBookings } from '@/mock/bookings.mock';
 import { mockRooms } from '@/mock/rooms.mock';
 import { toBookingSummaryDTO, toBookingDetailDTO } from '@/lib/mappers/booking.mapper';
 import { Booking } from '@/types/booking';
+import { sendTelegramBookingNotification } from '@/lib/telegram';
+import { isSupabaseConfigured, supabaseAdmin } from '@/lib/supabase';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -88,8 +90,55 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    // Add to in-memory mock store
+    // 1. Add to in-memory mock store (ensures instant local demo resilience)
     mockBookings.unshift(newBooking);
+
+    // 2. Persist to real Supabase PostgreSQL if configured
+    if (isSupabaseConfigured()) {
+      try {
+        await supabaseAdmin.from('bookings').insert({
+          id: newBooking.id,
+          booking_code: newBooking.bookingCode,
+          room_id: newBooking.roomId,
+          user_id: newBooking.userId,
+          check_in: newBooking.checkIn,
+          check_out: newBooking.checkOut,
+          adults: newBooking.guests.adults,
+          children: newBooking.guests.children,
+          total_nights: newBooking.priceBreakdown.nights,
+          total_price: newBooking.totalPrice,
+          subtotal: newBooking.priceBreakdown.subtotal,
+          taxes: newBooking.priceBreakdown.taxes,
+          service_fee: newBooking.priceBreakdown.serviceFee,
+          guest_name: newBooking.guestInfo.fullName,
+          guest_email: newBooking.guestInfo.email,
+          guest_phone: newBooking.guestInfo.phone,
+          special_requests: newBooking.guestInfo.specialRequests || null,
+          status: newBooking.status,
+          created_at: newBooking.createdAt,
+        });
+      } catch (dbErr) {
+        console.error('[Supabase Persistence] Failed to record booking into PostgreSQL:', dbErr);
+      }
+    }
+
+    // 3. Dispatch Instant Telegram Bot Notification (0đ)
+    try {
+      await sendTelegramBookingNotification({
+        bookingCode: newBooking.bookingCode,
+        roomName: room.name,
+        roomType: room.roomType,
+        checkIn: newBooking.checkIn,
+        checkOut: newBooking.checkOut,
+        nights: newBooking.priceBreakdown.nights,
+        guests: newBooking.guests,
+        guestInfo: newBooking.guestInfo,
+        totalPrice: newBooking.totalPrice,
+        createdAt: newBooking.createdAt,
+      });
+    } catch (telegramErr) {
+      console.error('[Telegram Notification] Failed to dispatch alert:', telegramErr);
+    }
 
     const dto = toBookingDetailDTO(newBooking, room);
 
